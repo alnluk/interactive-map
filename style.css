@@ -74,4 +74,10 @@ body, html {
 
 .clinician-item:hover {
     background: #e0e0e0;
+
+    #map {
+    flex: 1;
+    height: 100vh;
+}
+
 }
