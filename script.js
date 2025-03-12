@@ -1,5 +1,5 @@
 // Ініціалізація карти
-var map = L.map('map').setView([50.4501, 30.5234], 6);
+var map = L.map('map').setView([41.8781, -87.6298], 10); // Чикаго, Іллінойс
 
 // Додаємо тайли OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
