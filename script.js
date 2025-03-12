@@ -11,10 +11,24 @@ fetch('cities.geojson')
     .then(response => response.json())
     .then(data => {
         L.geoJSON(data, {
+            style: function (feature) {
+                return {
+                    color: feature.properties.role === "medsister" ? "blue" : "red", // Полігон для медсестри синій
+                    weight: 2,
+                    fillOpacity: 0.3
+                };
+            },
             onEachFeature: function (feature, layer) {
                 let cityName = feature.properties.name;
-                let people = feature.properties.people.join(", ");
-                layer.bindPopup(`<b>${cityName}</b><br>Люди: ${people}`);
+                let role = feature.properties.role || "невідомо"; // Додаємо роль (якщо є)
+                let people = feature.properties.people ? feature.properties.people.join(", ") : "Немає даних"; // Перевіряємо список людей
+                
+                if (feature.geometry.type === "Polygon") {
+                    layer.bindPopup(`<b>${cityName}</b><br>Роль: ${role}`);
+                } else {
+                    layer.bindPopup(`<b>${cityName}</b><br>Люди: ${people}`);
+                }
             }
         }).addTo(map);
-    });
+    })
+    .catch(error => console.error("Помилка завантаження GeoJSON:", error));
