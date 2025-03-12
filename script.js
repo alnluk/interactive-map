@@ -1,6 +1,6 @@
 // Ініціалізація карти
 var map = L.map('map').setView([41.8781, -87.6298], 12);
-L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }).addTo(map);
+L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }).addTo(map);
 
 // Перевірка наявності карти
 console.log("Карта успішно завантажена!");
