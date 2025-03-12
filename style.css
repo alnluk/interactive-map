@@ -10,11 +10,21 @@ body, html {
 
 /* Поле введення імені */
 #user-container {
-    display: flex;
+    display: flex !important;
     justify-content: center;
+    align-items: center;
     gap: 10px;
     margin: 10px 0;
+    background: white; /* Білий фон, щоб було видно */
+    padding: 10px;
+    border: 1px solid #ccc;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000; /* Щоб було поверх карти */
 }
+
 
 #username {
     padding: 5px;
