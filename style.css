@@ -6,8 +6,10 @@ body, html {
 
 #map {
     height: 100vh;
+}
 
-    #user-container {
+/* Поле введення імені */
+#user-container {
     display: flex;
     justify-content: center;
     gap: 10px;
@@ -20,6 +22,7 @@ body, html {
     border-radius: 5px;
 }
 
+/* Стилі кнопок */
 button {
     background-color: #007bff;
     color: white;
@@ -31,6 +34,4 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
-
 }
