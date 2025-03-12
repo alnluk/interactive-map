@@ -2,7 +2,10 @@
 var map = L.map('map').setView([41.8781, -87.6298], 12);
 L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }).addTo(map);
 
-// Змінна для збереження імені користувача
+// Перевірка наявності карти
+console.log("Карта успішно завантажена!");
+
+// Перевірка користувача
 var currentUser = null;
 function setUser() {
     var username = document.getElementById("username").value.trim();
@@ -12,6 +15,7 @@ function setUser() {
     }
     currentUser = username;
     document.getElementById("current-user").innerText = "Користувач: " + username;
+    console.log("Користувач вибраний:", username);
 }
 
 // Група для вибраних доріг
@@ -31,9 +35,11 @@ var roadLayer = L.geoJSON(null, {
             if (!selectedRoads.includes(layer)) {
                 selectedRoads.push(layer);
                 this.setStyle({ color: "red", weight: 7 }); // Виділення вибраних доріг
+                console.log("Додана дорога:", feature.properties.name);
             } else {
                 selectedRoads = selectedRoads.filter(r => r !== layer);
                 this.setStyle({ color: "yellow", weight: 5 }); // Видалення з вибору
+                console.log("Видалена дорога:", feature.properties.name);
             }
         });
     }
@@ -42,12 +48,20 @@ var roadLayer = L.geoJSON(null, {
 // Функція завантаження доріг
 function loadRoads() {
     fetch('roads.geojson')
-        .then(response => response.json())
-        .then(data => roadLayer.addData(data))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Помилка завантаження roads.geojson");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Дороги завантажені:", data);
+            roadLayer.addData(data);
+        })
         .catch(error => console.error("Помилка завантаження доріг:", error));
 }
 
-// Функція збереження полігону в `polygons.geojson`
+// Функція збереження полігону
 function savePolygon() {
     if (!currentUser) {
         alert("Будь ласка, введіть ім'я користувача перед створенням полігону!");
@@ -74,24 +88,8 @@ function savePolygon() {
         }
     };
 
-    // Завантажуємо існуючі полігони
-    fetch('polygons.geojson')
-        .then(response => response.json())
-        .then(data => {
-            data.features.push(newPolygon);
-            savePolygonsToFile(data);
-        })
-        .catch(() => {
-            // Якщо файл не існує, створюємо новий
-            savePolygonsToFile({ type: "FeatureCollection", features: [newPolygon] });
-        });
-
-    alert("Полігон збережено! Перевірте `polygons.geojson`.");
-}
-
-// Симуляція збереження у файл (у GitHub це потрібно зробити вручну)
-function savePolygonsToFile(data) {
-    console.log("Скопіюйте цей код у `polygons.geojson`:", JSON.stringify(data, null, 2));
+    console.log("Скопіюйте цей код у `polygons.geojson`:", JSON.stringify(newPolygon, null, 2));
+    alert("Полігон збережено! Перевірте Console (`F12`).");
 }
 
 // Кнопка для збереження полігону
