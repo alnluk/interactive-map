@@ -1,28 +1,20 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2821
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
-
-\f0\fs24 \cf0 \{\
-  "type": "FeatureCollection",\
-  "features": [\
-    \{\
-      "type": "Feature",\
-      "properties": \{ "name": "\uc0\u1050 \u1080 \u1111 \u1074 ", "people": ["\u1054 \u1083 \u1077 \u1075 ", "\u1052 \u1072 \u1088 \u1080 \u1085 \u1072 "] \},\
-      "geometry": \{ "type": "Point", "coordinates": [30.5234, 50.4501] \}\
-    \},\
-    \{\
-      "type": "Feature",\
-      "properties": \{ "name": "\uc0\u1051 \u1100 \u1074 \u1110 \u1074 ", "people": ["\u1030 \u1074 \u1072 \u1085 ", "\u1040 \u1085 \u1085 \u1072 "] \},\
-      "geometry": \{ "type": "Point", "coordinates": [24.0297, 49.8397] \}\
-    \},\
-    \{\
-      "type": "Feature",\
-      "properties": \{ "name": "\uc0\u1054 \u1076 \u1077 \u1089 \u1072 ", "people": ["\u1044 \u1084 \u1080 \u1090 \u1088 \u1086 ", "\u1050 \u1072 \u1090 \u1103 "] \},\
-      "geometry": \{ "type": "Point", "coordinates": [30.7233, 46.4825] \}\
-    \}\
-  ]\
-\}\
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Київ", "people": ["Олег", "Марина"] },
+      "geometry": { "type": "Point", "coordinates": [30.5234, 50.4501] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Львів", "people": ["Іван", "Анна"] },
+      "geometry": { "type": "Point", "coordinates": [24.0297, 49.8397] }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Одеса", "people": ["Дмитро", "Катя"] },
+      "geometry": { "type": "Point", "coordinates": [30.7233, 46.4825] }
+    }
+  ]
 }
