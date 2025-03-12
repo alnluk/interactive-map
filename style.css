@@ -2,82 +2,39 @@ body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    display: flex;
 }
 
-/* Карта */
 #map {
     height: 100vh;
-    flex: 1;
 }
 
-/* Бічна панель */
-#sidebar {
-    width: 250px;
-    background: #f4f4f4;
-    padding: 10px;
-    overflow-y: auto;
-    border-right: 1px solid #ccc;
-}
-
-/* Кнопка New Clinician */
-#new-clinician-btn {
-    width: 100%;
-    padding: 10px;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-#new-clinician-btn:hover {
-    background: #0056b3;
-}
-
-/* Форма для створення нового користувача */
-#clinician-form {
+/* Поле введення імені */
+#user-container {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     gap: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    background: white;
+    margin: 10px 10px;
     position: absolute;
-    top: 50px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Список користувачів */
-#clinician-list {
-    margin-top: 10px;
-}
-
-.clinician-item {
-    display: flex;
-    justify-content: space-between;
     background: white;
-    padding: 5px;
-    margin-top: 5px;
+    padding: 10px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Стилі кнопок */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.clinician-item:hover {
-    background: #e0e0e0;
-
-    #map {
-    flex: 1;
-    height: 100vh;
-}
-
+button:hover {
+    background-color: #0056b3;
 }
