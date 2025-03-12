@@ -1,20 +1,4 @@
 {
   "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "properties": { "name": "Київ", "people": ["Олег", "Марина"] },
-      "geometry": { "type": "Point", "coordinates": [30.5234, 50.4501] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Львів", "people": ["Іван", "Анна"] },
-      "geometry": { "type": "Point", "coordinates": [24.0297, 49.8397] }
-    },
-    {
-      "type": "Feature",
-      "properties": { "name": "Одеса", "people": ["Дмитро", "Катя"] },
-      "geometry": { "type": "Point", "coordinates": [30.7233, 46.4825] }
-    }
-  ]
+  "features": []
 }
