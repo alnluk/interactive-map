@@ -20,8 +20,8 @@ fetch('cities.geojson')
                 };
             },
             onEachFeature: function (feature, layer) {
-                let cityName = feature.properties.name;
-                let role = feature.properties.role || "Невідомо"; // Переконайся, що роль завжди є
+                let cityName = feature.properties.name || "Невідомо";
+                let role = feature.properties.role || "Невідомо";
                 
                 if (feature.geometry.type === "Polygon") {
                     layer.bindPopup(`<b>${cityName}</b><br>Роль: ${role}`);
@@ -33,3 +33,31 @@ fetch('cities.geojson')
         }).addTo(map);
     })
     .catch(error => console.error("Помилка завантаження GeoJSON:", error));
+
+// Додаємо інструмент малювання
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+var drawControl = new L.Control.Draw({
+    edit: { featureGroup: drawnItems },
+    draw: {
+        polygon: true,
+        marker: false,
+        circle: false,
+        rectangle: false,
+        polyline: false
+    }
+});
+map.addControl(drawControl);
+
+// Отримання координат після малювання
+map.on(L.Draw.Event.CREATED, function (event) {
+    var layer = event.layer;
+    drawnItems.addLayer(layer);
+
+    var coordinates = layer.getLatLngs()[0].map(coord => [coord.lng, coord.lat]);
+    coordinates.push(coordinates[0]); // Закриваємо контур
+
+    console.log("Скопіюй ці координати в cities.geojson:", JSON.stringify(coordinates, null, 2));
+    alert("Координати збережено в консолі. Відкрий Console (F12) та скопіюй.");
+});
