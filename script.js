@@ -1,18 +1,23 @@
 // Ініціалізація карти
-var map = L.map('map').setView([41.8781, -87.6298], 12); // Чикаго, Іллінойс
+var map = L.map('map').setView([41.8781, -87.6298], 12);
+L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { subdomains: ['mt0', 'mt1', 'mt2', 'mt3'] }).addTo(map);
 
-// Використання Google Maps Default Style
-var googleMaps = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-    subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-    attribution: '&copy; Google Maps'
-}).addTo(map);
+// Змінна для збереження імені користувача
+var currentUser = null;
+function setUser() {
+    var username = document.getElementById("username").value.trim();
+    if (username === "") {
+        alert("Будь ласка, введіть ваше ім'я!");
+        return;
+    }
+    currentUser = username;
+    document.getElementById("current-user").innerText = "Користувач: " + username;
+}
 
 // Група для вибраних доріг
 var selectedRoads = [];
 var roadLayer = L.geoJSON(null, {
-    style: function () {
-        return { color: "yellow", weight: 5 }; // Початковий колір доріг
-    },
+    style: function () { return { color: "yellow", weight: 5 }; }, // Початковий колір доріг
     onEachFeature: function (feature, layer) {
         layer.on('mouseover', function () {
             this.setStyle({ color: "orange", weight: 7 }); // Підсвітка при наведенні
@@ -37,45 +42,67 @@ var roadLayer = L.geoJSON(null, {
 // Функція завантаження доріг
 function loadRoads() {
     fetch('roads.geojson')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Помилка завантаження roads.geojson");
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Дороги успішно завантажені", data);
-            roadLayer.addData(data);
-        })
+        .then(response => response.json())
+        .then(data => roadLayer.addData(data))
         .catch(error => console.error("Помилка завантаження доріг:", error));
 }
 
-// Кнопка для завершення вибору доріг і створення полігону
-var finishButton = L.control({ position: 'topright' });
-finishButton.onAdd = function () {
-    var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-    div.innerHTML = '<button style="background: white; padding: 5px;">Створити полігон</button>';
-    div.onclick = function () {
-        if (selectedRoads.length < 2) {
-            alert("Виберіть хоча б дві дороги!");
-            return;
-        }
+// Функція збереження полігону в `polygons.geojson`
+function savePolygon() {
+    if (!currentUser) {
+        alert("Будь ласка, введіть ім'я користувача перед створенням полігону!");
+        return;
+    }
+    if (selectedRoads.length < 2) {
+        alert("Виберіть хоча б дві дороги!");
+        return;
+    }
 
-        var polygonCoords = [];
-        selectedRoads.forEach(layer => {
-            var coords = layer.feature.geometry.coordinates.map(coord => [coord[1], coord[0]]);
-            polygonCoords = polygonCoords.concat(coords);
+    var polygonCoords = [];
+    selectedRoads.forEach(layer => {
+        var coords = layer.feature.geometry.coordinates.map(coord => [coord[1], coord[0]]);
+        polygonCoords = polygonCoords.concat(coords);
+    });
+    polygonCoords.push(polygonCoords[0]); // Закриваємо контур
+
+    var newPolygon = {
+        type: "Feature",
+        properties: { user: currentUser },
+        geometry: {
+            type: "Polygon",
+            coordinates: [polygonCoords]
+        }
+    };
+
+    // Завантажуємо існуючі полігони
+    fetch('polygons.geojson')
+        .then(response => response.json())
+        .then(data => {
+            data.features.push(newPolygon);
+            savePolygonsToFile(data);
+        })
+        .catch(() => {
+            // Якщо файл не існує, створюємо новий
+            savePolygonsToFile({ type: "FeatureCollection", features: [newPolygon] });
         });
 
-        polygonCoords.push(polygonCoords[0]); // Закриваємо контур
+    alert("Полігон збережено! Перевірте `polygons.geojson`.");
+}
 
-        var polygon = L.polygon(polygonCoords, { color: "blue", weight: 3, fillOpacity: 0.4 }).addTo(map);
-        console.log("Скопіюй ці координати в cities.geojson:", JSON.stringify(polygonCoords, null, 2));
-        alert("Координати полігону збережено в консолі. Відкрий Console (F12) та скопіюй.");
-    };
+// Симуляція збереження у файл (у GitHub це потрібно зробити вручну)
+function savePolygonsToFile(data) {
+    console.log("Скопіюйте цей код у `polygons.geojson`:", JSON.stringify(data, null, 2));
+}
+
+// Кнопка для збереження полігону
+var saveButton = L.control({ position: 'topright' });
+saveButton.onAdd = function () {
+    var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+    div.innerHTML = '<button style="background: white; padding: 5px;">Зберегти полігон</button>';
+    div.onclick = savePolygon;
     return div;
 };
-finishButton.addTo(map);
+saveButton.addTo(map);
 
 // Завантажуємо дороги
 loadRoads();
