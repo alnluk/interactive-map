@@ -13,7 +13,7 @@ fetch('cities.geojson')
         L.geoJSON(data, {
             style: function (feature) {
                 return {
-                    color: feature.properties.role === "medsister" ? "blue" : "red", // Полігон для медсестри синій
+                    color: feature.properties.role === "RN" ? "blue" : "red", // Полігон для медсестри синій
                     weight: 2,
                     fillOpacity: 0.3
                 };
