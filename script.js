@@ -7,18 +7,20 @@ var googleMaps = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
     attribution: '&copy; Google Maps'
 }).addTo(map);
 
-// Група для збереження вибраних доріг
+// Група для вибраних доріг
 var selectedRoads = [];
 var roadLayer = L.geoJSON(null, {
     style: function () {
-        return { color: "yellow", weight: 5 }; // Підсвічування доріг при виборі
+        return { color: "yellow", weight: 5 }; // Початковий колір доріг
     },
     onEachFeature: function (feature, layer) {
         layer.on('mouseover', function () {
             this.setStyle({ color: "orange", weight: 7 }); // Підсвітка при наведенні
         });
         layer.on('mouseout', function () {
-            this.setStyle({ color: "yellow", weight: 5 }); // Повернення стилю
+            if (!selectedRoads.includes(layer)) {
+                this.setStyle({ color: "yellow", weight: 5 }); // Повернення стилю
+            }
         });
         layer.on('click', function () {
             if (!selectedRoads.includes(layer)) {
@@ -34,9 +36,15 @@ var roadLayer = L.geoJSON(null, {
 
 // Функція завантаження доріг
 function loadRoads() {
-    fetch('roads.geojson') // Використовуємо roads.geojson для збереження доріг
-        .then(response => response.json())
+    fetch('roads.geojson')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Помилка завантаження roads.geojson");
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log("Дороги успішно завантажені", data);
             roadLayer.addData(data);
         })
         .catch(error => console.error("Помилка завантаження доріг:", error));
@@ -69,5 +77,5 @@ finishButton.onAdd = function () {
 };
 finishButton.addTo(map);
 
-// Завантажуємо дороги після ініціалізації карти
+// Завантажуємо дороги
 loadRoads();
