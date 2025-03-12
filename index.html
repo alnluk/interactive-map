@@ -17,12 +17,24 @@
 </head>
 <body>
 
-    <!-- Поле для введення імені користувача -->
-<div id="user-container">
-    <input type="text" id="username" placeholder="Введіть ваше ім'я">
-    <button onclick="setUser()">Вибрати користувача</button>
-</div>
-<p id="current-user">Користувач: не вибрано</p>
+    <!-- Бічна панель -->
+    <div id="sidebar">
+        <button id="new-clinician-btn">New Clinician</button>
+        <div id="clinician-list"></div>
+    </div>
+
+    <!-- Форма додавання нового користувача -->
+    <div id="clinician-form" class="hidden">
+        <input type="text" id="clinician-name" placeholder="Ім'я">
+        <select id="clinician-role">
+            <option value="RN">RN</option>
+            <option value="PT">PT</option>
+            <option value="CNA">CNA</option>
+            <option value="OT">OT</option>
+            <option value="ST">ST</option>
+        </select>
+        <button id="create-clinician">Create</button>
+    </div>
 
     <div id="map"></div>
 
@@ -30,4 +42,3 @@
 
 </body>
 </html>
-
